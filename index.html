@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GrammarUp — English Grammar for ELL Students</title>
+<meta name="description" content="GrammarUp helps K-8 English language learners master grammar step by step with AI-powered lessons that adapt to every student.">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --purple: #534AB7;
+    --purple-light: #EEEDFE;
+    --purple-dark: #3C3489;
+    --green: #1D9E75;
+    --green-light: #E1F5EE;
+    --text: #1a1a2e;
+    --text-secondary: #6b7280;
+    --border: #e5e7eb;
+    --bg: #ffffff;
+    --bg-secondary: #f9fafb;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: var(--text); background: var(--bg); line-height: 1.6; }
+  .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+  /* NAV */
+  nav { border-bottom: 1px solid var(--border); position: sticky; top: 0; background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); z-index: 100; }
+  .nav-inner { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; }
+  .logo { font-size: 22px; font-weight: 700; color: var(--purple); text-decoration: none; }
+  .logo span { color: var(--green); }
+  .nav-btn { background: var(--purple); color: white; border: none; padding: 10px 22px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 500; cursor: pointer; text-decoration: none; display: inline-block; }
+  .nav-btn:hover { background: var(--purple-dark); }
+
+  /* HERO */
+  .hero { text-align: center; padding: 80px 0 60px; }
+  .hero-badge { display: inline-block; background: var(--purple-light); color: var(--purple); font-size: 13px; font-weight: 500; padding: 6px 16px; border-radius: 20px; margin-bottom: 24px; }
+  .hero h1 { font-size: clamp(32px, 5vw, 52px); font-weight: 700; line-height: 1.15; margin-bottom: 20px; color: var(--text); }
+  .hero h1 em { font-style: normal; color: var(--purple); }
+  .hero p { font-size: 18px; color: var(--text-secondary); max-width: 580px; margin: 0 auto 36px; }
+  .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .btn-primary { background: var(--purple); color: white; border: none; padding: 14px 28px; border-radius: var(--radius); font-size: 16px; font-weight: 500; cursor: pointer; text-decoration: none; display: inline-block; transition: background 0.2s; }
+  .btn-primary:hover { background: var(--purple-dark); }
+  .btn-outline { background: transparent; color: var(--purple); border: 2px solid var(--purple); padding: 14px 28px; border-radius: var(--radius); font-size: 16px; font-weight: 500; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.2s; }
+  .btn-outline:hover { background: var(--purple-light); }
+
+  /* STATS */
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin: 0 0 72px; }
+  .stat { text-align: center; padding: 24px 16px; border-right: 1px solid var(--border); }
+  .stat:last-child { border-right: none; }
+  .stat-num { font-size: 32px; font-weight: 700; color: var(--purple); }
+  .stat-label { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
+
+  /* SECTIONS */
+  section { margin-bottom: 80px; }
+  .section-label { font-size: 12px; font-weight: 600; color: var(--green); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px; }
+  .section-title { font-size: clamp(22px, 3vw, 32px); font-weight: 700; color: var(--text); margin-bottom: 10px; }
+  .section-sub { font-size: 16px; color: var(--text-secondary); margin-bottom: 40px; max-width: 560px; }
+
+  /* FEATURES */
+  .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .feature-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; transition: border-color 0.2s; }
+  .feature-card:hover { border-color: var(--purple); }
+  .feature-icon { width: 44px; height: 44px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 14px; }
+  .feature-card h3 { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+  .feature-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+
+  /* LEVELS */
+  .levels-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; }
+  .level-card { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); transition: transform 0.2s; }
+  .level-card:hover { transform: translateY(-2px); }
+  .level-header { padding: 20px; }
+  .level-badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; background: rgba(255,255,255,0.25); color: white; margin-bottom: 10px; letter-spacing: 0.5px; }
+  .level-name { font-size: 20px; font-weight: 700; color: white; }
+  .level-char { font-size: 13px; color: rgba(255,255,255,0.75); margin-top: 2px; }
+  .level-body { background: var(--bg-secondary); padding: 12px 20px; }
+  .level-meta { font-size: 13px; color: var(--text-secondary); }
+
+  /* PRICING */
+  .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; max-width: 600px; }
+  .price-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; }
+  .price-card.featured { border: 2px solid var(--purple); position: relative; }
+  .featured-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--purple); color: white; font-size: 11px; font-weight: 600; padding: 4px 14px; border-radius: 20px; white-space: nowrap; }
+  .price-name { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .price-amount { font-size: 42px; font-weight: 700; color: var(--text); margin: 14px 0 4px; line-height: 1; }
+  .price-amount sup { font-size: 20px; vertical-align: super; }
+  .price-amount sub { font-size: 16px; color: var(--text-secondary); font-weight: 400; }
+  .price-annual { font-size: 13px; color: var(--green); font-weight: 500; margin-bottom: 16px; }
+  .price-desc { font-size: 14px; color: var(--text-secondary); margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
+  .price-features { list-style: none; margin-bottom: 24px; }
+  .price-features li { font-size: 14px; color: var(--text-secondary); padding: 6px 0; display: flex; gap: 10px; align-items: flex-start; }
+  .check { width: 16px; height: 16px; border-radius: 50%; background: var(--green); flex-shrink: 0; margin-top: 2px; display: flex; align-items: center; justify-content: center; }
+  .check::after { content: ''; width: 6px; height: 4px; border-left: 2px solid white; border-bottom: 2px solid white; transform: rotate(-45deg) translateY(-1px); display: block; }
+  .price-btn { width: 100%; padding: 13px; border-radius: var(--radius-sm); font-size: 15px; font-weight: 500; cursor: pointer; border: none; transition: all 0.2s; text-decoration: none; display: block; text-align: center; }
+  .price-btn.primary { background: var(--purple); color: white; }
+  .price-btn.primary:hover { background: var(--purple-dark); }
+  .price-btn.outline { background: transparent; color: var(--purple); border: 2px solid var(--purple); }
+  .price-btn.outline:hover { background: var(--purple-light); }
+
+  /* WHO */
+  .who-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+  .who-card { background: var(--bg-secondary); border-radius: var(--radius); padding: 24px; border: 1px solid var(--border); }
+  .who-icon { font-size: 28px; margin-bottom: 12px; }
+  .who-card h3 { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+  .who-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+
+  /* CTA */
+  .cta-section { background: linear-gradient(135deg, var(--purple) 0%, #7F77DD 100%); border-radius: 20px; padding: 60px 40px; text-align: center; margin-bottom: 60px; }
+  .cta-section h2 { font-size: 32px; font-weight: 700; color: white; margin-bottom: 12px; }
+  .cta-section p { font-size: 18px; color: rgba(255,255,255,0.85); margin-bottom: 32px; }
+  .btn-white { background: white; color: var(--purple); border: none; padding: 14px 32px; border-radius: var(--radius); font-size: 16px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; transition: opacity 0.2s; }
+  .btn-white:hover { opacity: 0.9; }
+
+  /* FOOTER */
+  footer { border-top: 1px solid var(--border); padding: 32px 0; text-align: center; }
+  .footer-logo { font-size: 18px; font-weight: 700; color: var(--purple); margin-bottom: 8px; }
+  .footer-logo span { color: var(--green); }
+  footer p { font-size: 13px; color: var(--text-secondary); }
+
+  @media (max-width: 600px) {
+    .hero { padding: 48px 0 40px; }
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .stat:nth-child(2) { border-right: none; }
+    .stat:nth-child(3) { border-top: 1px solid var(--border); }
+    .stat:nth-child(4) { border-top: 1px solid var(--border); border-right: none; }
+    .cta-section { padding: 40px 24px; }
+    .pricing-grid { max-width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <div class="nav-inner">
+      <a href="#" class="logo">Grammar<span>Up</span></a>
+      <a href="https://grammarup-rosy.vercel.app" class="nav-btn" target="_blank">Try for free</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+
+  <section class="hero">
+    <div class="hero-badge">Designed for ELL students · Grades K–8</div>
+    <h1>English grammar made<br><em>fun and personal</em></h1>
+    <p>GrammarUp helps K–8 English language learners master grammar step by step — with AI-powered lessons that adapt to every student.</p>
+    <div class="hero-btns">
+      <a href="https://grammarup-rosy.vercel.app" class="btn-primary" target="_blank">Start for free</a>
+      <a href="#pricing" class="btn-outline">See pricing</a>
+    </div>
+  </section>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-num">43</div><div class="stat-label">grammar lessons</div></div>
+    <div class="stat"><div class="stat-num">4</div><div class="stat-label">CEFR levels</div></div>
+    <div class="stat"><div class="stat-num">K–8</div><div class="stat-label">grade range</div></div>
+    <div class="stat"><div class="stat-num">AI</div><div class="stat-label">powered practice</div></div>
+  </div>
+
+  <section>
+    <div class="section-label">Features</div>
+    <div class="section-title">Everything a student needs</div>
+    <div class="section-sub">From beginner to advanced — GrammarUp grows with your child.</div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon" style="background:#EEEDFE;">🎯</div>
+        <h3>Placement test</h3>
+        <p>20 questions automatically place every student at the right starting level. No guessing, no frustration.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:#E1F5EE;">📚</div>
+        <h3>43 structured lessons</h3>
+        <p>Carefully designed lessons covering every key grammar concept from A1 to B2 — built for ELL learners.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:#EEEDFE;">✨</div>
+        <h3>AI free practice</h3>
+        <p>Unlock infinite AI-generated mixed lessons after completing a level. Fresh content every time.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:#E1F5EE;">🗂️</div>
+        <h3>My study plan</h3>
+        <p>Students pick their weak topics and AI builds a personalised lesson just for them in seconds.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:#FAEEDA;">📈</div>
+        <h3>Progress tracking</h3>
+        <p>XP points, streaks, and level badges keep students motivated and coming back every single day.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:#EEEDFE;">☁️</div>
+        <h3>Synced across devices</h3>
+        <p>Sign in with Google and progress saves automatically. Start on phone, continue on tablet or computer.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-label">Levels</div>
+    <div class="section-title">Four levels, one journey</div>
+    <div class="section-sub">Aligned to the CEFR framework — internationally recognised and trusted by educators worldwide.</div>
+    <div class="levels-grid">
+      <div class="level-card">
+        <div class="level-header" style="background:#1D9E75;">
+          <div class="level-badge">A1</div>
+          <div class="level-name">Biscuit</div>
+          <div class="level-char">Little Learners · Grades K–2</div>
+        </div>
+        <div class="level-body"><div class="level-meta">13 topics · Ages 5–8</div></div>
+      </div>
+      <div class="level-card">
+        <div class="level-header" style="background:#185FA5;">
+          <div class="level-badge">A2</div>
+          <div class="level-name">Marco</div>
+          <div class="level-char">Kids · Grades 3–4</div>
+        </div>
+        <div class="level-body"><div class="level-meta">10 topics · Ages 8–10</div></div>
+      </div>
+      <div class="level-card">
+        <div class="level-header" style="background:#BA7517;">
+          <div class="level-badge">B1</div>
+          <div class="level-name">Priya</div>
+          <div class="level-char">Kids · Grades 5–6</div>
+        </div>
+        <div class="level-body"><div class="level-meta">10 topics · Ages 10–12</div></div>
+      </div>
+      <div class="level-card">
+        <div class="level-header" style="background:#534AB7;">
+          <div class="level-badge">B2</div>
+          <div class="level-name">Zara</div>
+          <div class="level-char">Tweens · Grades 7–8</div>
+        </div>
+        <div class="level-body"><div class="level-meta">10 topics · Ages 12–14</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing">
+    <div class="section-label">Pricing</div>
+    <div class="section-title">Simple and transparent</div>
+    <div class="section-sub">Start free. Upgrade when you're ready. No hidden fees, no surprises.</div>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-name">Free</div>
+        <div class="price-amount"><sup>$</sup>0<sub> forever</sub></div>
+        <div class="price-desc">Perfect for getting started and trying GrammarUp.</div>
+        <ul class="price-features">
+          <li><div class="check"></div>A1 and A2 levels</li>
+          <li><div class="check"></div>Full placement test</li>
+          <li><div class="check"></div>Progress tracking</li>
+          <li><div class="check"></div>Google sign in</li>
+        </ul>
+        <a href="https://grammarup-rosy.vercel.app" class="price-btn outline" target="_blank">Get started free</a>
+      </div>
+      <div class="price-card featured">
+        <div class="featured-badge">Most popular</div>
+        <div class="price-name">Premium</div>
+        <div class="price-amount"><sup>$</sup>5<sub> / month</sub></div>
+        <div class="price-annual">or $39.99 / year — save 33%</div>
+        <div class="price-desc">Everything your child needs to master English grammar.</div>
+        <ul class="price-features">
+          <li><div class="check"></div>All 4 levels — A1 to B2</li>
+          <li><div class="check"></div>All 43 structured lessons</li>
+          <li><div class="check"></div>Unlimited AI free practice</li>
+          <li><div class="check"></div>My study plan feature</li>
+          <li><div class="check"></div>Progress synced across devices</li>
+          <li><div class="check"></div>New content added regularly</li>
+        </ul>
+        <a href="https://grammarup-rosy.vercel.app" class="price-btn primary" target="_blank">Start free trial</a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-label">Who it's for</div>
+    <div class="section-title">Built for real learners</div>
+    <div class="who-grid">
+      <div class="who-card">
+        <div class="who-icon">👦</div>
+        <h3>ELL students</h3>
+        <p>For students learning English as a second language in grades K–8. Self-directed and fun — no teacher needed to get started.</p>
+      </div>
+      <div class="who-card">
+        <div class="who-icon">👨‍👩‍👧</div>
+        <h3>Parents</h3>
+        <p>Give your child a structured, proven way to improve their English grammar at their own pace — from home.</p>
+      </div>
+      <div class="who-card">
+        <div class="who-icon">👩‍🏫</div>
+        <h3>ESL teachers</h3>
+        <p>Recommend GrammarUp as a homework supplement. Students practise independently and arrive better prepared.</p>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="container">
+  <div class="cta-section">
+    <h2>Ready to start learning?</h2>
+    <p>Join students already improving their English grammar with GrammarUp.</p>
+    <a href="https://grammarup-rosy.vercel.app" class="btn-white" target="_blank">Try GrammarUp for free</a>
+  </div>
+</div>
+
+<div class="container">
+  <footer>
+    <div class="footer-logo">Grammar<span>Up</span></div>
+    <p>Built for ELL students everywhere · 2026</p>
+  </footer>
+</div>
+
+</body>
+</html>
