@@ -26,6 +26,16 @@
 <meta name="twitter:title" content="GrammarUp — English Grammar Made Fun and Personal">
 <meta name="twitter:description" content="AI-powered grammar lessons for K-8 English language learners. 43 structured lessons across 4 CEFR levels. Start free today.">
 
+<script>
+  // Set theme before first paint to avoid a flash of the wrong mode
+  (function () {
+    let stored = null;
+    try { stored = localStorage.getItem('grammarup-theme'); } catch (e) {}
+    const theme = stored || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', theme);
+  })();
+</script>
+
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -36,16 +46,43 @@
     --green-light: #E1F5EE;
     --text: #1a1a2e;
     --text-secondary: #6b7280;
+    --amber-light: #FAEEDA;
     --border: #e5e7eb;
     --bg: #ffffff;
+    --bg-card: #ffffff;
     --bg-secondary: #f9fafb;
+    --nav-bg: rgba(255, 255, 255, 0.92);
     --radius: 12px;
     --radius-sm: 8px;
     --shadow-lift: 0 12px 28px rgba(26, 26, 46, 0.10), 0 4px 10px rgba(26, 26, 46, 0.06);
     --shadow-featured: 0 16px 40px rgba(83, 74, 183, 0.22);
   }
+
+  /* DARK MODE */
+  html[data-theme="dark"] {
+    --purple: #7B74D4;
+    --purple-light: rgba(123, 116, 212, 0.16);
+    --purple-dark: #6A62C4;
+    --green: #2DB88A;
+    --green-light: rgba(45, 184, 138, 0.15);
+    --amber-light: rgba(245, 166, 35, 0.16);
+    --text: #f0f0ff;
+    --text-secondary: #9090b0;
+    --border: #2a2a4a;
+    --bg: #0f0f1a;
+    --bg-card: #1a1a2e;
+    --bg-secondary: #16213e;
+    --nav-bg: rgba(15, 15, 26, 0.88);
+    --shadow-lift: 0 12px 28px rgba(0, 0, 0, 0.45), 0 4px 10px rgba(0, 0, 0, 0.3);
+    --shadow-featured: 0 16px 40px rgba(123, 116, 212, 0.28);
+  }
+  html[data-theme="dark"] .hero-wrap { background: linear-gradient(120deg, #0f0f1a 0%, #1d1843 28%, #0f0f1a 52%, #11291f 78%, #0f0f1a 100%); background-size: 280% 280%; }
+  html[data-theme="dark"] .hero-badge { border-color: rgba(123, 116, 212, 0.35); }
+  html[data-theme="dark"] .btn-outline { background: rgba(15, 15, 26, 0.5); }
+  html[data-theme="dark"] .price-card.featured { background: linear-gradient(180deg, rgba(123, 116, 212, 0.18) 0%, var(--bg-card) 38%); }
+  html[data-theme="dark"] .cta-section { background: linear-gradient(135deg, #463E95 0%, #7B74D4 100%); }
   html { scroll-behavior: smooth; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: var(--text); background: var(--bg); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: var(--text); background: var(--bg); line-height: 1.6; -webkit-font-smoothing: antialiased; transition: background 0.3s ease, color 0.3s ease; }
   .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
   section { scroll-margin-top: 90px; }
 
@@ -54,8 +91,14 @@
   .reveal.visible { opacity: 1; transform: translateY(0); }
 
   /* NAV */
-  nav { border-bottom: 1px solid var(--border); position: sticky; top: 0; background: rgba(255,255,255,0.92); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 100; }
+  nav { border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--nav-bg); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 100; transition: background 0.3s ease, border-color 0.3s ease; }
   .nav-inner { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; }
+  .nav-actions { display: flex; align-items: center; gap: 10px; }
+  .theme-toggle { width: 38px; height: 38px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: transparent; color: var(--text); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: border-color 0.25s ease, color 0.25s ease, transform 0.25s ease; }
+  .theme-toggle:hover { border-color: var(--purple); color: var(--purple); transform: translateY(-1px); }
+  .theme-toggle .icon-moon { display: none; }
+  html[data-theme="dark"] .theme-toggle .icon-sun { display: none; }
+  html[data-theme="dark"] .theme-toggle .icon-moon { display: block; }
   .logo { font-size: 22px; font-weight: 700; color: var(--purple); text-decoration: none; letter-spacing: -0.3px; }
   .logo span { color: var(--green); }
   .nav-btn { background: var(--purple); color: white; border: none; padding: 10px 22px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 500; cursor: pointer; text-decoration: none; display: inline-block; transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease; }
@@ -85,7 +128,7 @@
   .btn-outline:hover { background: var(--purple-light); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(83, 74, 183, 0.18); }
 
   /* STATS */
-  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin: 56px 0 88px; background: var(--bg); }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin: 56px 0 88px; background: var(--bg-card); }
   .stat { text-align: center; padding: 28px 16px; border-right: 1px solid var(--border); }
   .stat:last-child { border-right: none; }
   .stat-num { font-size: 34px; font-weight: 800; color: var(--purple); letter-spacing: -0.5px; }
@@ -99,9 +142,12 @@
 
   /* FEATURES */
   .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; }
-  .feature-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 26px; transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease; }
+  .feature-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 26px; transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease; }
   .feature-card:hover { border-color: var(--purple); transform: translateY(-5px); box-shadow: var(--shadow-lift); }
   .feature-icon { width: 44px; height: 44px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 16px; }
+  .tint-purple { background: var(--purple-light); }
+  .tint-green { background: var(--green-light); }
+  .tint-amber { background: var(--amber-light); }
   .feature-card h3 { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
   .feature-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.65; }
 
@@ -118,7 +164,7 @@
 
   /* PRICING */
   .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; max-width: 640px; align-items: start; }
-  .price-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 30px; transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease; }
+  .price-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 30px; transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease; }
   .price-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lift); }
   .price-card.featured { border: 2px solid var(--purple); position: relative; background: linear-gradient(180deg, var(--purple-light) 0%, #ffffff 38%); box-shadow: var(--shadow-featured); transform: scale(1.03); }
   .price-card.featured:hover { transform: scale(1.03) translateY(-5px); box-shadow: 0 22px 48px rgba(83, 74, 183, 0.3); }
@@ -150,7 +196,7 @@
 
   /* TESTIMONIALS */
   .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
-  .testimonial-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px 26px; display: flex; flex-direction: column; transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease; }
+  .testimonial-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px 26px; display: flex; flex-direction: column; transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease; }
   .testimonial-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lift); border-color: var(--purple); }
   .testimonial-stars { color: #F5A623; font-size: 15px; letter-spacing: 2px; margin-bottom: 14px; }
   .testimonial-quote { font-size: 15px; color: var(--text); line-height: 1.65; flex-grow: 1; margin-bottom: 18px; }
@@ -161,7 +207,7 @@
 
   /* FAQ */
   .faq-list { max-width: 720px; }
-  .faq-item { border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 12px; background: var(--bg); overflow: hidden; transition: border-color 0.25s ease, box-shadow 0.25s ease; }
+  .faq-item { border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 12px; background: var(--bg-card); overflow: hidden; transition: border-color 0.25s ease, box-shadow 0.25s ease; }
   .faq-item:hover { border-color: var(--purple); }
   .faq-item[open] { border-color: var(--purple); box-shadow: 0 6px 18px rgba(83, 74, 183, 0.1); }
   .faq-question { font-size: 16px; font-weight: 600; color: var(--text); padding: 18px 22px; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 16px; user-select: none; }
@@ -219,7 +265,13 @@
   <div class="container">
     <div class="nav-inner">
       <a href="#" class="logo">Grammar<span>Up</span></a>
-      <a href="https://grammarup-rosy.vercel.app" class="nav-btn" target="_blank">Try for free</a>
+      <div class="nav-actions">
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark mode">
+          <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <a href="https://grammarup-rosy.vercel.app" class="nav-btn" target="_blank">Try for free</a>
+      </div>
     </div>
   </div>
 </nav>
@@ -254,32 +306,32 @@
     <div class="section-sub">From beginner to advanced — GrammarUp grows with your child.</div>
     <div class="features-grid">
       <div class="feature-card">
-        <div class="feature-icon" style="background:#EEEDFE;">🎯</div>
+        <div class="feature-icon tint-purple">🎯</div>
         <h3>Placement test</h3>
         <p>20 questions automatically place every student at the right starting level. No guessing, no frustration.</p>
       </div>
       <div class="feature-card">
-        <div class="feature-icon" style="background:#E1F5EE;">📚</div>
+        <div class="feature-icon tint-green">📚</div>
         <h3>43 structured lessons</h3>
         <p>Carefully designed lessons covering every key grammar concept from A1 to B2 — built for ELL learners.</p>
       </div>
       <div class="feature-card">
-        <div class="feature-icon" style="background:#EEEDFE;">✨</div>
+        <div class="feature-icon tint-purple">✨</div>
         <h3>AI free practice</h3>
         <p>Unlock infinite AI-generated mixed lessons after completing a level. Fresh content every time.</p>
       </div>
       <div class="feature-card">
-        <div class="feature-icon" style="background:#E1F5EE;">🗂️</div>
+        <div class="feature-icon tint-green">🗂️</div>
         <h3>My study plan</h3>
         <p>Students pick their weak topics and AI builds a personalised lesson just for them in seconds.</p>
       </div>
       <div class="feature-card">
-        <div class="feature-icon" style="background:#FAEEDA;">📈</div>
+        <div class="feature-icon tint-amber">📈</div>
         <h3>Progress tracking</h3>
         <p>XP points, streaks, and level badges keep students motivated and coming back every single day.</p>
       </div>
       <div class="feature-card">
-        <div class="feature-icon" style="background:#EEEDFE;">☁️</div>
+        <div class="feature-icon tint-purple">☁️</div>
         <h3>Synced across devices</h3>
         <p>Sign in with Google and progress saves automatically. Start on phone, continue on tablet or computer.</p>
       </div>
@@ -392,7 +444,7 @@
         <div class="testimonial-stars" aria-hidden="true">★★★★★</div>
         <p class="testimonial-quote">"My daughter used to dread grammar homework. Now she asks to do GrammarUp after dinner because she doesn't want to lose her streak. Her teacher noticed the difference within a month."</p>
         <div class="testimonial-author">
-          <div class="testimonial-avatar" style="background:#EEEDFE;">👩</div>
+          <div class="testimonial-avatar tint-purple">👩</div>
           <div>
             <div class="testimonial-name">Maria</div>
             <div class="testimonial-role">Parent of a Grade 3 student</div>
@@ -403,7 +455,7 @@
         <div class="testimonial-stars" aria-hidden="true">★★★★★</div>
         <p class="testimonial-quote">"I recommend GrammarUp to families in my newcomer classes. The placement test puts kids at the right level on day one, and the CEFR alignment matches how I already plan my lessons."</p>
         <div class="testimonial-author">
-          <div class="testimonial-avatar" style="background:#E1F5EE;">👩‍🏫</div>
+          <div class="testimonial-avatar tint-green">👩‍🏫</div>
           <div>
             <div class="testimonial-name">Mr. Donovan</div>
             <div class="testimonial-role">ESL Teacher</div>
@@ -414,7 +466,7 @@
         <div class="testimonial-stars" aria-hidden="true">★★★★★</div>
         <p class="testimonial-quote">"I like that the AI makes new questions every time, so it never feels like repeating the same worksheet. I finished B1 and I'm already on Zara's level!"</p>
         <div class="testimonial-author">
-          <div class="testimonial-avatar" style="background:#FAEEDA;">🧑</div>
+          <div class="testimonial-avatar tint-amber">🧑</div>
           <div>
             <div class="testimonial-name">Daniyar</div>
             <div class="testimonial-role">Grade 6 student</div>
@@ -489,6 +541,31 @@
   }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
 
   document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+
+  // Dark mode toggle — overrides the system preference and persists in localStorage
+  const themeToggle = document.getElementById('themeToggle');
+  const themeMeta = document.querySelector('meta[name="theme-color"]');
+
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    themeMeta.setAttribute('content', theme === 'dark' ? '#0f0f1a' : '#534AB7');
+    themeToggle.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+  }
+
+  applyTheme(document.documentElement.getAttribute('data-theme'));
+
+  themeToggle.addEventListener('click', () => {
+    const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    try { localStorage.setItem('grammarup-theme', next); } catch (e) {}
+    applyTheme(next);
+  });
+
+  // Follow system changes only when the user hasn't picked a theme manually
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    let stored = null;
+    try { stored = localStorage.getItem('grammarup-theme'); } catch (err) {}
+    if (!stored) applyTheme(e.matches ? 'dark' : 'light');
+  });
 </script>
 
 </body>
